@@ -41,11 +41,28 @@ function validateEmail(input, requiredMsg, invalidMsg) {
 }
 
 
+function validatePassword(input, requiredMsg, invalidMsg){
+    const errors = [];
+    if(!hasValue(input,requiredMsg)){
+        return false;
+    }
+    const passwordRegex = /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+
+    const password = input.value.trim();
+    if(!passwordRegex.test(password)){
+        return showError(input, invalidMsg);
+    }
+    return true;
+}
+
+
 const form = document.querySelector("#signup");
  
 const NAME_REQUIRED = "Please enter your name";
 const EMAIL_REQUIRED = "Please enter your email";
 const EMAIL_INVALID = "Please enter a correct email address format";
+const PASSWORD_REQUIRED = "Please enter a correct Password and format";
+const PASSWORD_INVALID = "Please enter a correct Password and format, The password must be At Least 8 characters, at least one number, one capital and one speacial character";
 
 form.addEventListener("submit", function (event) {
     // stop form submission
@@ -54,6 +71,7 @@ form.addEventListener("submit", function (event) {
     // validate the form
     let nameValid = hasValue(form.elements["name"], NAME_REQUIRED);
     let emailValid = validateEmail(form.elements["email"], EMAIL_REQUIRED, EMAIL_INVALID);
+    let passwordValid = validatePassword(form.elemnts["password"], PASSWORD_REQUIRED, PASSWORD_INVALID);
 
       // if valid, submit the form.
   if (nameValid && emailValid && passwordValid) {
@@ -63,3 +81,6 @@ form.addEventListener("submit", function (event) {
  
  
 });
+
+const togglePassword = document.querySelector("#togglePassword");
+const password = document.querySelector("#password");
